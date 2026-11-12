@@ -7,26 +7,27 @@ import Link from "next/link";
 type Account = { id: string; code: string; name: string; account_type: string; is_active: boolean };
 type JournalEntry = { id: string; number: string; entry_date: string; entry_type: string; state: string; amount_total: number };
 type Payment = { id: string; amount: number; state: string };
+type ApiList<T> = { data: T[] };
 
 export function ContabilidadHub() {
   const accounts = useQuery({
     queryKey: ["chart-of-accounts-active"],
-    queryFn: () => apiClient.get<Account[]>("/api/v1/finance/chart-of-accounts?is_active=true"),
+    queryFn: () => apiClient.get<ApiList<Account>>("/api/v1/finance/chart-of-accounts?is_active=true"),
   });
 
   const journalEntries = useQuery({
     queryKey: ["journal-entries-posted"],
-    queryFn: () => apiClient.get<JournalEntry[]>("/api/v1/finance/journal-entries?state=posted"),
+    queryFn: () => apiClient.get<ApiList<JournalEntry>>("/api/v1/finance/journal-entries?state=posted"),
   });
 
   const draftEntries = useQuery({
     queryKey: ["journal-entries-draft"],
-    queryFn: () => apiClient.get<JournalEntry[]>("/api/v1/finance/journal-entries?state=draft"),
+    queryFn: () => apiClient.get<ApiList<JournalEntry>>("/api/v1/finance/journal-entries?state=draft"),
   });
 
   const payments = useQuery({
     queryKey: ["payments-paid"],
-    queryFn: () => apiClient.get<Payment[]>("/api/v1/finance/payments?state=paid"),
+    queryFn: () => apiClient.get<ApiList<Payment>>("/api/v1/finance/payments?state=paid"),
   });
 
   const isLoading = accounts.isLoading || journalEntries.isLoading || draftEntries.isLoading || payments.isLoading;
@@ -46,10 +47,10 @@ export function ContabilidadHub() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <KpiCard label="Cuentas activas" value={accounts.data?.length ?? 0} />
-        <KpiCard label="Asientos publicados" value={journalEntries.data?.length ?? 0} />
-        <KpiCard label="Asientos borrador" value={draftEntries.data?.length ?? 0} />
-        <KpiCard label="Pagos realizados" value={payments.data?.length ?? 0} />
+        <KpiCard label="Cuentas activas" value={accounts.data?.data.length ?? 0} />
+        <KpiCard label="Asientos publicados" value={journalEntries.data?.data.length ?? 0} />
+        <KpiCard label="Asientos borrador" value={draftEntries.data?.data.length ?? 0} />
+        <KpiCard label="Pagos realizados" value={payments.data?.data.length ?? 0} />
       </div>
 
       {/* Quick Links */}
@@ -65,7 +66,7 @@ export function ContabilidadHub() {
       </div>
 
       {/* Recent posted entries */}
-      {journalEntries.data && journalEntries.data.length > 0 && (
+      {journalEntries.data && journalEntries.data.data.length > 0 && (
         <div>
           <h2 className="mb-2 text-base font-medium text-text-primary">Asientos recientes</h2>
           <div className="overflow-x-auto rounded-lg border border-border-primary">
@@ -79,7 +80,7 @@ export function ContabilidadHub() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-primary">
-                {journalEntries.data.slice(0, 5).map((entry) => (
+                {journalEntries.data.data.slice(0, 5).map((entry) => (
                   <tr key={entry.id}>
                     <td className="px-3 py-2 text-text-primary">{entry.number}</td>
                     <td className="px-3 py-2 text-text-muted">{entry.entry_date}</td>
