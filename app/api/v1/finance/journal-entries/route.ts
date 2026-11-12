@@ -24,16 +24,16 @@ export async function GET(req: Request): Promise<Response> {
   const supabase = await createClient();
   let query = supabase
     .from("finance_journal_entries")
-    .select("id, journal_id, number, date, ref, partner_id, move_type, state, payment_state, amount_total, organization_id")
+    .select("id, journal_id, number, entry_date, partner_id, entry_type, state, payment_state, amount_total, organization_id")
     .eq("organization_id", activeOrg.orgId)
-    .order("date", { ascending: false })
+    .order("entry_date", { ascending: false })
     .limit(limit);
 
   if (state) query = query.eq("state", state);
   if (journalId) query = query.eq("journal_id", journalId);
-  if (moveType) query = query.eq("move_type", moveType);
-  if (dateFrom) query = query.gte("date", dateFrom);
-  if (dateTo) query = query.lte("date", dateTo);
+  if (moveType) query = query.eq("entry_type", moveType);
+  if (dateFrom) query = query.gte("entry_date", dateFrom);
+  if (dateTo) query = query.lte("entry_date", dateTo);
 
   const { data, error } = await query;
   if (error) return fail("internal_error", error.message, 500, { requestId });

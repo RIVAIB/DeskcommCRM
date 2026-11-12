@@ -5,7 +5,7 @@ import { apiClient } from "@/lib/api/client";
 import Link from "next/link";
 
 type Account = { id: string; code: string; name: string; account_type: string; is_active: boolean };
-type JournalEntry = { id: string; number: string; date: string; journal_name: string; entry_type: string; state: string; total_debit: number };
+type JournalEntry = { id: string; number: string; entry_date: string; entry_type: string; state: string; amount_total: number };
 type Payment = { id: string; amount: number; state: string };
 
 export function ContabilidadHub() {
@@ -74,7 +74,7 @@ export function ContabilidadHub() {
                 <tr>
                   <th className="px-3 py-2">Numero</th>
                   <th className="px-3 py-2">Fecha</th>
-                  <th className="px-3 py-2">Diario</th>
+                  <th className="px-3 py-2">Tipo</th>
                   <th className="px-3 py-2">Estado</th>
                 </tr>
               </thead>
@@ -82,8 +82,8 @@ export function ContabilidadHub() {
                 {journalEntries.data.slice(0, 5).map((entry) => (
                   <tr key={entry.id}>
                     <td className="px-3 py-2 text-text-primary">{entry.number}</td>
-                    <td className="px-3 py-2 text-text-muted">{entry.date}</td>
-                    <td className="px-3 py-2 text-text-muted">{entry.journal_name}</td>
+                    <td className="px-3 py-2 text-text-muted">{entry.entry_date}</td>
+                    <td className="px-3 py-2 text-text-muted">{entry.entry_type}</td>
                     <td className="px-3 py-2">
                       <span className="rounded bg-green-100 px-2 py-0.5 text-xs text-green-700">
                         {entry.state}
