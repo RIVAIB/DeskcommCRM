@@ -142,6 +142,11 @@ export default withSentryConfig(nextConfig, {
   // side errors will fail.
   tunnelRoute: "/monitoring",
 
+  // Disable source map upload in self-hosted builds (no Sentry auth token).
+  sourcemaps: {
+    disable: !process.env.SENTRY_AUTH_TOKEN,
+  },
+
   webpack: {
     // Herança do wizard do Sentry (instrumentação automática de cron monitors).
     // Inerte aqui: o bloco `webpack:` inteiro é ignorado pelo build de produção,
