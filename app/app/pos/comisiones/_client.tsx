@@ -28,7 +28,7 @@ export function ComisionesPOSClient() {
 
   const { data: commissions, isLoading } = useQuery({
     queryKey: ["pos-commissions", period],
-    queryFn: () => apiClient.get<CommissionEntry[]>(`/api/v1/pos/commissions?period=${period}`),
+    queryFn: () => apiClient.get<{ data: CommissionEntry[] }>(`/api/v1/pos/commissions?period=${period}`).then(r => r.data),
   });
 
   const closePeriod = useMutation({

@@ -49,7 +49,7 @@ function trendArrow(val: number) {
 export function KpisClient() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["contabilidad-kpis"],
-    queryFn: () => apiClient.get<KpiData>("/api/v1/contabilidad/kpis"),
+    queryFn: () => apiClient.get<{ data: KpiData }>("/api/v1/contabilidad/kpis").then(r => r.data),
   });
 
   return (

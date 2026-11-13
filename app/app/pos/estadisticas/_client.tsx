@@ -41,7 +41,7 @@ export function EstadisticasPOSClient() {
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ["pos-statistics", from, to],
-    queryFn: () => apiClient.get<Statistics>(`/api/v1/pos/statistics?from=${from}&to=${to}`),
+    queryFn: () => apiClient.get<{ data: Statistics }>(`/api/v1/pos/statistics?from=${from}&to=${to}`).then(r => r.data),
   });
 
   return (

@@ -31,7 +31,7 @@ export function DescuentosPOSClient() {
 
   const { data: discounts, isLoading } = useQuery({
     queryKey: ["pos-discounts"],
-    queryFn: () => apiClient.get<Discount[]>("/api/v1/pos/discounts"),
+    queryFn: () => apiClient.get<{ data: Discount[] }>("/api/v1/pos/discounts").then(r => r.data),
   });
 
   const create = useMutation({

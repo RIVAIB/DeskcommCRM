@@ -31,7 +31,7 @@ export function EstadoResultadosClient() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["income-statement", year, month],
-    queryFn: () => apiClient.get<IncomeStatement>(`/api/v1/contabilidad/reportes/income-statement?year=${year}&month=${month}`),
+    queryFn: () => apiClient.get<{ data: IncomeStatement }>(`/api/v1/contabilidad/reportes/income-statement?year=${year}&month=${month}`).then(r => r.data),
   });
 
   return (

@@ -51,28 +51,28 @@ export function ImpuestosClient() {
 
   const { data: taxGroups, isLoading: loadingGroups } = useQuery({
     queryKey: ["tax-groups"],
-    queryFn: () => apiClient.get<TaxGroup[]>("/api/v1/finance/tax-groups"),
+    queryFn: () => apiClient.get<{ data: TaxGroup[] }>("/api/v1/finance/tax-groups").then(r => r.data),
   });
 
   const { data: taxConfigs, isLoading: loadingConfigs } = useQuery({
     queryKey: ["tax-configs"],
-    queryFn: () => apiClient.get<TaxConfig[]>("/api/v1/finance/tax-configs"),
+    queryFn: () => apiClient.get<{ data: TaxConfig[] }>("/api/v1/finance/tax-configs").then(r => r.data),
   });
 
   const { data: receivable } = useQuery({
     queryKey: ["receivable"],
     queryFn: () =>
-      apiClient.get<ReceivablePayable>(
+      apiClient.get<{ data: ReceivablePayable }>(
         "/api/v1/finance/reports/receivable-payable?type=receivable"
-      ),
+      ).then(r => r.data),
   });
 
   const { data: payable } = useQuery({
     queryKey: ["payable"],
     queryFn: () =>
-      apiClient.get<ReceivablePayable>(
+      apiClient.get<{ data: ReceivablePayable }>(
         "/api/v1/finance/reports/receivable-payable?type=payable"
-      ),
+      ).then(r => r.data),
   });
 
   const createGroup = useMutation({
@@ -114,10 +114,10 @@ export function ImpuestosClient() {
 
   const computeTax = useMutation({
     mutationFn: ({ base, tax_id }: { base: number; tax_id: string }) =>
-      apiClient.post<ComputeResult>("/api/v1/finance/tax-configs/compute", {
+      apiClient.post<{ data: ComputeResult }>("/api/v1/finance/tax-configs/compute", {
         base,
         tax_id,
-      }),
+      }).then(r => r.data),
   });
 
   const filteredConfigs = taxConfigs?.filter((c) => {

@@ -13,6 +13,8 @@ type Account = {
   is_active: boolean;
 };
 
+type ApiList<T> = { data: T[] };
+
 const ACCOUNT_TYPES = [
   { value: "", label: "Todos" },
   { value: "asset", label: "Activo" },
@@ -34,7 +36,7 @@ export function PlanCuentas() {
 
   const accounts = useQuery({
     queryKey: ["chart-of-accounts", filterType],
-    queryFn: () => apiClient.get<Account[]>(url),
+    queryFn: () => apiClient.get<ApiList<Account>>(url),
   });
 
   const createAccount = useMutation({
@@ -53,7 +55,7 @@ export function PlanCuentas() {
     },
   });
 
-  const sorted = accounts.data ? [...accounts.data].sort((a, b) => a.code.localeCompare(b.code)) : [];
+  const sorted = accounts.data?.data ? [...accounts.data.data].sort((a, b) => a.code.localeCompare(b.code)) : [];
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-4">

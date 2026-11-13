@@ -45,7 +45,7 @@ export function LibroMayorClient() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["general-ledger", accountId, startDate, endDate],
-    queryFn: () => apiClient.get<LedgerResponse>(`/api/v1/contabilidad/reportes/general-ledger?${params.toString()}`),
+    queryFn: () => apiClient.get<{ data: LedgerResponse }>(`/api/v1/contabilidad/reportes/general-ledger?${params.toString()}`).then(r => r.data),
   });
 
   return (

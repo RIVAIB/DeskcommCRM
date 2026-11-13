@@ -27,9 +27,9 @@ export function LibrosFiscales() {
   const fiscalData = useQuery({
     queryKey: ["fiscal", activeTab, year, month],
     queryFn: () =>
-      apiClient.get<FiscalRow[]>(
+      apiClient.get<{ data: FiscalRow[] }>(
         `/api/v1/finance/fiscal/libros?type=${activeTab}&year=${year}&month=${month}`
-      ),
+      ).then(r => r.data),
   });
 
   // Derive column headers from data

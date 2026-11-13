@@ -32,7 +32,7 @@ export function ConfiguracionPOSClient() {
 
   const { data: configs, isLoading: loadingConfigs } = useQuery({
     queryKey: ["pos-configs"],
-    queryFn: () => apiClient.get<POSConfig[]>("/api/v1/pos/configs"),
+    queryFn: () => apiClient.get<{ data: POSConfig[] }>("/api/v1/pos/configs").then(r => r.data),
   });
 
   const createConfig = useMutation({
@@ -55,7 +55,7 @@ export function ConfiguracionPOSClient() {
 
   const { data: paymentMethods, isLoading: loadingPM } = useQuery({
     queryKey: ["pos-payment-methods"],
-    queryFn: () => apiClient.get<PaymentMethod[]>("/api/v1/pos/payment-methods"),
+    queryFn: () => apiClient.get<{ data: PaymentMethod[] }>("/api/v1/pos/payment-methods").then(r => r.data),
   });
 
   const createPaymentMethod = useMutation({

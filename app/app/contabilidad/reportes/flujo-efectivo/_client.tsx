@@ -31,7 +31,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 export function FlujoEfectivoClient() {
   const { data, isLoading } = useQuery({
     queryKey: ["cash-flow"],
-    queryFn: () => apiClient.get<CashFlow>("/api/v1/contabilidad/reportes/cash-flow"),
+    queryFn: () => apiClient.get<{ data: CashFlow }>("/api/v1/contabilidad/reportes/cash-flow").then(r => r.data),
   });
 
   return (

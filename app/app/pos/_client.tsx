@@ -46,22 +46,22 @@ export function POSDashboardClient() {
 
   const { data: sessions, isLoading: loadingSessions } = useQuery({
     queryKey: ["pos-sessions-open"],
-    queryFn: () => apiClient.get<POSSession[]>("/api/v1/pos/sessions?state=opened"),
+    queryFn: () => apiClient.get<{ data: POSSession[] }>("/api/v1/pos/sessions?state=opened").then(r => r.data),
   });
 
   const { data: configs } = useQuery({
     queryKey: ["pos-configs"],
-    queryFn: () => apiClient.get<POSConfig[]>("/api/v1/pos/configs"),
+    queryFn: () => apiClient.get<{ data: POSConfig[] }>("/api/v1/pos/configs").then(r => r.data),
   });
 
   const { data: dailyReport } = useQuery({
     queryKey: ["pos-daily-report"],
-    queryFn: () => apiClient.get<DailyReport>("/api/v1/pos/reports?type=daily"),
+    queryFn: () => apiClient.get<{ data: DailyReport }>("/api/v1/pos/reports?type=daily").then(r => r.data),
   });
 
   const { data: sessionSummary } = useQuery({
     queryKey: ["pos-session-summary", expandedSession],
-    queryFn: () => apiClient.get<SessionSummary>(`/api/v1/pos/sessions/${expandedSession}/summary`),
+    queryFn: () => apiClient.get<{ data: SessionSummary }>(`/api/v1/pos/sessions/${expandedSession}/summary`).then(r => r.data),
     enabled: !!expandedSession,
   });
 

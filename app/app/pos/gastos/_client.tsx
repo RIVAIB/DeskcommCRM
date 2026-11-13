@@ -104,13 +104,13 @@ export function GastosPOSClient() {
   const { data: expenses, isLoading } = useQuery({
     queryKey: ["pos-expenses", qs],
     queryFn: () =>
-      apiClient.get<Expense[]>(`/api/v1/pos/expenses${qs ? `?${qs}` : ""}`),
+      apiClient.get<{ data: Expense[] }>(`/api/v1/pos/expenses${qs ? `?${qs}` : ""}`).then(r => r.data),
   });
 
   const { data: openSessions } = useQuery({
     queryKey: ["pos-sessions-open"],
     queryFn: () =>
-      apiClient.get<POSSession[]>("/api/v1/pos/sessions?state=opened"),
+      apiClient.get<{ data: POSSession[] }>("/api/v1/pos/sessions?state=opened").then(r => r.data),
   });
 
   const create = useMutation({

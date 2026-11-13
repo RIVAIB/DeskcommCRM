@@ -139,7 +139,7 @@ export function TicketsPOSClient() {
   const { data: templates, isLoading } = useQuery({
     queryKey: ["pos-ticket-templates"],
     queryFn: () =>
-      apiClient.get<TicketTemplate[]>("/api/v1/pos/ticket-templates"),
+      apiClient.get<{ data: TicketTemplate[] }>("/api/v1/pos/ticket-templates").then(r => r.data),
   });
 
   const saveMutation = useMutation({

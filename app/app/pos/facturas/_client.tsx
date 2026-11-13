@@ -33,7 +33,7 @@ export function FacturasPOSClient() {
 
   const { data: invoices, isLoading } = useQuery({
     queryKey: ["pos-invoices", statusFilter],
-    queryFn: () => apiClient.get<Invoice[]>(`/api/v1/pos/invoices${statusFilter ? `?status=${statusFilter}` : ""}`),
+    queryFn: () => apiClient.get<{ data: Invoice[] }>(`/api/v1/pos/invoices${statusFilter ? `?status=${statusFilter}` : ""}`).then(r => r.data),
   });
 
   const voidInvoice = useMutation({

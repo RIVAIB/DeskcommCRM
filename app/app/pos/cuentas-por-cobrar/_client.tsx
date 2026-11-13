@@ -39,12 +39,12 @@ export function CuentasPorCobrarPOSClient() {
 
   const { data: accounts, isLoading } = useQuery({
     queryKey: ["pos-accounts-receivable", statusFilter],
-    queryFn: () => apiClient.get<AccountReceivable[]>(`/api/v1/pos/accounts-receivable${statusFilter ? `?status=${statusFilter}` : ""}`),
+    queryFn: () => apiClient.get<{ data: AccountReceivable[] }>(`/api/v1/pos/accounts-receivable${statusFilter ? `?status=${statusFilter}` : ""}`).then(r => r.data),
   });
 
   const { data: aging } = useQuery({
     queryKey: ["pos-aging"],
-    queryFn: () => apiClient.get<AgingBucket[]>("/api/v1/pos/accounts-receivable/aging"),
+    queryFn: () => apiClient.get<{ data: AgingBucket[] }>("/api/v1/pos/accounts-receivable/aging").then(r => r.data),
   });
 
   return (

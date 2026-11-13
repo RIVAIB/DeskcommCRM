@@ -27,7 +27,7 @@ function formatBs(n: number) {
 export function BalanceComprobacionClient() {
   const { data, isLoading } = useQuery({
     queryKey: ["trial-balance"],
-    queryFn: () => apiClient.get<TrialBalance>("/api/v1/contabilidad/reportes/trial-balance"),
+    queryFn: () => apiClient.get<{ data: TrialBalance }>("/api/v1/contabilidad/reportes/trial-balance").then(r => r.data),
   });
 
   return (

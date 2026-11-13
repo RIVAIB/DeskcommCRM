@@ -94,20 +94,20 @@ export function DevolucionesPOSClient() {
 
   const { data: returns, isLoading } = useQuery({
     queryKey: ["pos-returns"],
-    queryFn: () => apiClient.get<PosReturn[]>("/api/v1/pos/returns"),
+    queryFn: () => apiClient.get<{ data: PosReturn[] }>("/api/v1/pos/returns").then(r => r.data),
   });
 
   const { data: recentSales } = useQuery({
     queryKey: ["pos-sales-for-return"],
     queryFn: () =>
-      apiClient.get<Sale[]>("/api/v1/pos/sales"),
+      apiClient.get<{ data: Sale[] }>("/api/v1/pos/sales").then(r => r.data),
     enabled: showForm,
   });
 
   const { data: openSessions } = useQuery({
     queryKey: ["pos-sessions-open"],
     queryFn: () =>
-      apiClient.get<POSSession[]>("/api/v1/pos/sessions?state=opened"),
+      apiClient.get<{ data: POSSession[] }>("/api/v1/pos/sessions?state=opened").then(r => r.data),
     enabled: showForm,
   });
 

@@ -76,12 +76,12 @@ export function CajasPOSClient() {
 
   const { data: configs } = useQuery({
     queryKey: ["pos-configs"],
-    queryFn: () => apiClient.get<POSConfig[]>("/api/v1/pos/configs"),
+    queryFn: () => apiClient.get<{ data: POSConfig[] }>("/api/v1/pos/configs").then(r => r.data),
   });
 
   const { data: sessions } = useQuery({
     queryKey: ["pos-sessions-all"],
-    queryFn: () => apiClient.get<POSSession[]>("/api/v1/pos/sessions"),
+    queryFn: () => apiClient.get<{ data: POSSession[] }>("/api/v1/pos/sessions").then(r => r.data),
   });
 
   const openSession = useMutation({
@@ -308,13 +308,13 @@ function SessionPanel({
 }) {
   const { data: summary } = useQuery({
     queryKey: ["pos-session-summary", session.id],
-    queryFn: () => apiClient.get<SessionSummary>(`/api/v1/pos/sessions/${session.id}/summary`),
+    queryFn: () => apiClient.get<{ data: SessionSummary }>(`/api/v1/pos/sessions/${session.id}/summary`).then(r => r.data),
     refetchInterval: 15000,
   });
 
   const { data: movements } = useQuery({
     queryKey: ["pos-cash-movements", session.id],
-    queryFn: () => apiClient.get<CashMovement[]>(`/api/v1/pos/sessions/${session.id}/cash-movements`),
+    queryFn: () => apiClient.get<{ data: CashMovement[] }>(`/api/v1/pos/sessions/${session.id}/cash-movements`).then(r => r.data),
   });
 
   return (

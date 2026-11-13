@@ -28,7 +28,7 @@ export function ProductosPOSClient() {
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["pos-products", search],
-    queryFn: () => apiClient.get<Product[]>(`/api/v1/pos/products${search ? `?search=${encodeURIComponent(search)}` : ""}`),
+    queryFn: () => apiClient.get<{ data: Product[] }>(`/api/v1/pos/products${search ? `?search=${encodeURIComponent(search)}` : ""}`).then(r => r.data),
   });
 
   const create = useMutation({

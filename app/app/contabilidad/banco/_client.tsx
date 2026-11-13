@@ -49,25 +49,25 @@ export function BancoClient() {
 
   const { data: statements, isLoading: loadingStatements } = useQuery({
     queryKey: ["bank-statements"],
-    queryFn: () => apiClient.get<BankStatement[]>("/api/v1/finance/bank/statements"),
+    queryFn: () => apiClient.get<{ data: BankStatement[] }>("/api/v1/finance/bank/statements").then(r => r.data),
   });
 
   const { data: balances } = useQuery({
     queryKey: ["bank-balances"],
-    queryFn: () => apiClient.get<BankBalance[]>("/api/v1/finance/bank/balances"),
+    queryFn: () => apiClient.get<{ data: BankBalance[] }>("/api/v1/finance/bank/balances").then(r => r.data),
   });
 
   const { data: journals } = useQuery({
     queryKey: ["bank-journals"],
-    queryFn: () => apiClient.get<Journal[]>("/api/v1/finance/journals?type=bank"),
+    queryFn: () => apiClient.get<{ data: Journal[] }>("/api/v1/finance/journals?type=bank").then(r => r.data),
   });
 
   const { data: lines, isLoading: loadingLines } = useQuery({
     queryKey: ["statement-lines", expandedId],
     queryFn: () =>
-      apiClient.get<StatementLine[]>(
+      apiClient.get<{ data: StatementLine[] }>(
         `/api/v1/finance/bank/statements/${expandedId}/lines`
-      ),
+      ).then(r => r.data),
     enabled: !!expandedId,
   });
 

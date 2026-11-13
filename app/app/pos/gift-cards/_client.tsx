@@ -33,7 +33,7 @@ export function GiftCardsPOSClient() {
 
   const { data: cards, isLoading } = useQuery({
     queryKey: ["pos-gift-cards"],
-    queryFn: () => apiClient.get<GiftCard[]>("/api/v1/pos/gift-cards"),
+    queryFn: () => apiClient.get<{ data: GiftCard[] }>("/api/v1/pos/gift-cards").then(r => r.data),
   });
 
   const create = useMutation({

@@ -27,7 +27,7 @@ function formatBs(n: number) {
 export function BalanceSheetClient() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["balance-sheet"],
-    queryFn: () => apiClient.get<BalanceSheet>("/api/v1/contabilidad/reportes/balance-sheet"),
+    queryFn: () => apiClient.get<{ data: BalanceSheet }>("/api/v1/contabilidad/reportes/balance-sheet").then(r => r.data),
   });
 
   return (

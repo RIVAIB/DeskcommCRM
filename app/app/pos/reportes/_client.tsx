@@ -40,7 +40,7 @@ export function ReportesPOSClient() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["pos-reports", tab],
-    queryFn: () => apiClient.get<unknown[]>(`/api/v1/pos/reports?type=${tab}`),
+    queryFn: () => apiClient.get<{ data: unknown[] }>(`/api/v1/pos/reports?type=${tab}`).then(r => r.data),
   });
 
   return (

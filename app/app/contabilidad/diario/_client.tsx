@@ -49,18 +49,18 @@ export function Diario() {
 
   const entries = useQuery({
     queryKey: ["journal-entries", filterState, filterJournal, dateFrom, dateTo],
-    queryFn: () => apiClient.get<JournalEntry[]>(`/api/v1/finance/journal-entries${qs ? `?${qs}` : ""}`),
+    queryFn: () => apiClient.get<{ data: JournalEntry[] }>(`/api/v1/finance/journal-entries${qs ? `?${qs}` : ""}`).then(r => r.data),
   });
 
   const journals = useQuery({
     queryKey: ["journals"],
-    queryFn: () => apiClient.get<Journal[]>("/api/v1/finance/journals"),
+    queryFn: () => apiClient.get<{ data: Journal[] }>("/api/v1/finance/journals").then(r => r.data),
   });
 
   // Fetch detail when expanding
   const detail = useQuery({
     queryKey: ["journal-entry-detail", expandedId],
-    queryFn: () => apiClient.get<JournalEntry>(`/api/v1/finance/journal-entries/${expandedId}`),
+    queryFn: () => apiClient.get<{ data: JournalEntry }>(`/api/v1/finance/journal-entries/${expandedId}`).then(r => r.data),
     enabled: !!expandedId,
   });
 

@@ -30,7 +30,7 @@ export function PresupuestosClient() {
 
   const { data: budgets, isLoading } = useQuery({
     queryKey: ["budgets", year],
-    queryFn: () => apiClient.get<Budget[]>(`/api/v1/contabilidad/budgets?year=${year}`),
+    queryFn: () => apiClient.get<{ data: Budget[] }>(`/api/v1/contabilidad/budgets?year=${year}`).then(r => r.data),
   });
 
   const saveBudget = useMutation({

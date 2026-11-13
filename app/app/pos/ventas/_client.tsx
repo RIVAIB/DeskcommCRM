@@ -53,12 +53,12 @@ export function VentasPOSClient() {
 
   const { data: sales, isLoading } = useQuery({
     queryKey: ["pos-sales", stateFilter, sessionFilter, dateFrom, dateTo],
-    queryFn: () => apiClient.get<Sale[]>(`/api/v1/pos/sales${qs}`),
+    queryFn: () => apiClient.get<{ data: Sale[] }>(`/api/v1/pos/sales${qs}`).then(r => r.data),
   });
 
   const { data: saleDetail } = useQuery({
     queryKey: ["pos-sale-detail", expandedSale],
-    queryFn: () => apiClient.get<Sale>(`/api/v1/pos/sales/${expandedSale}`),
+    queryFn: () => apiClient.get<{ data: Sale }>(`/api/v1/pos/sales/${expandedSale}`).then(r => r.data),
     enabled: !!expandedSale,
   });
 
